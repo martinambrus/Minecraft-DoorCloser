@@ -1,13 +1,20 @@
 name: ${project.artifactId}
 main: net.tenrem.doorcloser.DoorCloserPlugin
 version: ${project.version}
-api-version: 1.13
+api-version: 1.15
 author: Pete Brown 10rem.net
+permissions:
+   tenrem.doorcloser.toggle:
+      default: true
+      description: Allows use of the /dctoggle command.
 commands:
    dcreload:
       description: Reload the configuration file.
       usage: "Usage: '/dcreload' to reload configuration file."
       permission: tenrem.doorcloser.reload
       permission-message: You don't have permission to reload the configuration file.
-   
-   
+   dctoggle:
+      description: Toggles DoorCloser functionality for a player.
+      usage: "Usage: '/dctoggle' to enable/disable the automatic door closing functionality."
+      permission: tenrem.doorcloser.toggle
+      permission-message: You don't have permission to enable or disable this functionality.

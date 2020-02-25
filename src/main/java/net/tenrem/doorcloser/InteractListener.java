@@ -1,27 +1,21 @@
 package net.tenrem.doorcloser;
 
-import org.bukkit.block.data.*;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.block.data.Openable;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected.Half;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Openable;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Door.Hinge;
 import org.bukkit.block.data.type.Gate;
 import org.bukkit.block.data.type.TrapDoor;
-import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-
-import javax.lang.model.util.ElementScanner6;
-
-
-import org.bukkit.*;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public final class InteractListener implements Listener 
 {
@@ -29,7 +23,6 @@ public final class InteractListener implements Listener
 	private static final int TICKS_PER_SECOND = 20;
 
 	private final DoorCloserPlugin _plugin;
-
 	
 	public InteractListener(DoorCloserPlugin plugin)
 	{
@@ -47,6 +40,13 @@ public final class InteractListener implements Listener
 		// so this can be changed in the config file
 		if (e.isCancelled() && Settings.ignoreCanceledEvents)
 		{
+			return;
+		}
+
+		// check if we've not requested only players who toggled this functionality
+		// to have it enabled
+		String pName = e.getPlayer().getName();
+		if (Settings.onlyForToggledPlayers && (!this._plugin.ToggledPlayers.containsKey(pName) || !this._plugin.ToggledPlayers.get(pName))) {
 			return;
 		}
 
@@ -182,7 +182,27 @@ public final class InteractListener implements Listener
 			}
 		}
 	}
-	 
+
+	// Tells a joining player about the state of DoorCloser
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void playerJoin(PlayerJoinEvent e)
+	{
+		// if this player isn't in the toggle map yet, add them in along with the actual default toggle value
+		String pName = e.getPlayer().getName();
+
+		if (!this._plugin.ToggledPlayers.containsKey(pName)) {
+			this._plugin.ToggledPlayers.put(pName, Settings.toggleDefault);
+		}
+
+		e.getPlayer().sendMessage(
+			ChatColor.GOLD + "" + ChatColor.BOLD + "Automatic DoorCloser" +
+			   ChatColor.RESET + " is currently " +
+			   (this._plugin.ToggledPlayers.get(pName) ? ChatColor.GREEN + "enabled" : ChatColor.RED + "disabled") +
+			   ChatColor.RESET + ", use " + ChatColor.AQUA + "/dctoggle" + ChatColor.RESET + " to enable/disable."
+		);
+
+		e.getPlayer().sendMessage("");
+	}
 	
 	// handles getting the Openable from a specific block
 	// returns null if not a Openable

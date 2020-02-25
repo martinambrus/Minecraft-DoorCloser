@@ -51,6 +51,14 @@ IgnoreIfSneaking: false
 # mouse button on the door.
 OnlyIfSneakingAndLeftClicked: false
 
+# OnlyForToggledPlayers: true if you want your players to decide whether
+# they want their doors to auto-close or not
+OnlyForToggledPlayers: true
+
+# ToggleDefault: true if you want all your players to have door closing toggled ON
+# by default when they first join your server
+ToggleDefault: true
+
 # List of Block IDs for blocks (trap doors, gates, and doors) that you want to auto-close
 # Case is not important, but use the official block names as found here:
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html

@@ -1,9 +1,9 @@
 package net.tenrem.doorcloser;
 
-import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -20,6 +20,14 @@ public class Settings
 	final static String onlyIfSneakingAndLeftClicked_Key = "OnlyIfSneakingAndLeftClicked";
 	final static boolean onlyIfSneakingAndLeftClicked_Default = false;
 	public static boolean onlyIfSneakingAndLeftClicked = onlyIfSneakingAndLeftClicked_Default;
+
+	final static String onlyForToggledPlayers_Key = "OnlyForToggledPlayers";
+	final static boolean onlyForToggledPlayers_Default = false;
+	public static boolean onlyForToggledPlayers = onlyForToggledPlayers_Default;
+
+	final static String toggleDefault_Key = "ToggleDefault";
+	final static boolean toggleDefault_Default = false;
+	public static boolean toggleDefault = toggleDefault_Default;
 
 	final static String secondsToRemainOpen_Key = "Time";
 	final static int secondsToRemainOpen_Default = 5;
@@ -91,12 +99,16 @@ public class Settings
 		config.addDefault(ignoreIfInCreative_Key, ignoreIfInCreative_Default);
 		config.addDefault(ignoreIfSneaking_Key, ignoreIfSneaking_Default);
 		config.addDefault(onlyIfSneakingAndLeftClicked_Key, onlyIfSneakingAndLeftClicked_Default);
+		config.addDefault(onlyForToggledPlayers_Key, onlyForToggledPlayers_Default);
+		config.addDefault(toggleDefault_Key, toggleDefault_Default);
 
 		// read settings
 
 		Settings.configFileGeneratedByVersion = ThisPlugin.getConfig().getString(configFileGeneratedByVersion_Key);
 		Settings.ignoreCanceledEvents = config.getBoolean(ignoreCanceledEvents_Key);
 		Settings.onlyIfSneakingAndLeftClicked = config.getBoolean(onlyIfSneakingAndLeftClicked_Key);
+		Settings.onlyForToggledPlayers = config.getBoolean(onlyForToggledPlayers_Key);
+		Settings.toggleDefault = config.getBoolean(toggleDefault_Key);
 		
 		Settings.secondsToRemainOpen = ThisPlugin.getConfig().getInt(secondsToRemainOpen_Key);
 

@@ -2,8 +2,13 @@ package net.tenrem.doorcloser;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DoorCloserPlugin extends JavaPlugin 
 {
+	public final Map<String, Boolean> ToggledPlayers = new HashMap<String, Boolean>();
+
 	@Override
 	public void onEnable() 
 	{	
@@ -27,7 +32,8 @@ public class DoorCloserPlugin extends JavaPlugin
 	
 	private void RegisterCommands()
 	{
-		getCommand("dcreload").setExecutor(new CommandReload(this));
+		getCommand("dcreload").setExecutor(new CommandReload( this ));
+		getCommand("dctoggle").setExecutor(new CommandToggle( this ));
 	}
 	
 	
