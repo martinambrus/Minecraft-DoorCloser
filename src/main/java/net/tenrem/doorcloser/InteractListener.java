@@ -51,9 +51,14 @@ public final class InteractListener implements Listener
 		}
 
 		Action action = e.getAction();
-		
-		// right clicks only
-		if (action == Action.RIGHT_CLICK_BLOCK)
+
+		// check if we did not request to react on sneak and left-click only
+		if (Settings.onlyIfSneakingAndLeftClicked && action != Action.LEFT_CLICK_BLOCK) {
+			return;
+		}
+
+		// right clicks OR left clicks and sneaking only
+		if (action == Action.RIGHT_CLICK_BLOCK || (Settings.onlyIfSneakingAndLeftClicked && action == Action.LEFT_CLICK_BLOCK))
 		{
 			Block clickedBlock = e.getClickedBlock();
 			BlockData blockData = clickedBlock.getBlockData();
@@ -69,12 +74,11 @@ public final class InteractListener implements Listener
 				}
 	
 				 // check to see if we're ignoring sneaking
-				if ((e.getPlayer().isSneaking()) && (Settings.ignoreIfSneaking))
+				if (!Settings.onlyIfSneakingAndLeftClicked && (e.getPlayer().isSneaking()) && (Settings.ignoreIfSneaking))
 				{
 					return;
 				}
-		      
-				
+
 				Material blockDoorType = blockData.getMaterial();
 				 
 				// check to see if it is a type of block we want to close. Note that
@@ -161,6 +165,19 @@ public final class InteractListener implements Listener
 				{
 					// be sure to comment this out or change log level or else it will spam the logs
 				//	_plugin.getLogger().info("DEBUG: Unexpected block: " + blockDoorType.toString());
+				}
+
+				// actually open the door if we left-clicked while sneaking
+				if (Settings.onlyIfSneakingAndLeftClicked) {
+					Openable door1Data = OpenableFromBlock(clickedBlock);
+
+					if (door1Data != null) {
+						if (!door1Data.isOpen())
+						{
+							door1Data.setOpen(true);
+							clickedBlock.setBlockData(door1Data);
+						}
+					}
 				}
 			}
 		}

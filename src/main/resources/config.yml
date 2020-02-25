@@ -46,6 +46,11 @@ IgnoreIfInCreative: true
 # sneaking. This will work for all players, not just someone in creative
 IgnoreIfSneaking: false
 
+# OnlyIfSneakingAndLeftClicked: true if you want to enable the auto-closing
+# functionality only when the player is sneaking and pressed the left
+# mouse button on the door.
+OnlyIfSneakingAndLeftClicked: false
+
 # List of Block IDs for blocks (trap doors, gates, and doors) that you want to auto-close
 # Case is not important, but use the official block names as found here:
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
